@@ -29,7 +29,9 @@ resources = {
     "milk": 200,
     "coffee": 100,
 }
-
+money = {
+    "money": 0,
+}
 def enough_ingredients(ingredients):
     for item in ingredients:
         if ingredients[item] > resources[item]:
@@ -50,16 +52,15 @@ def askMoney(coffee):
         print("Your change is: $" + (
             str(quarters + dimes + nickels - MENU[coffee]['cost'])) + ". Now making coffee")
 
-def update(coffee, money):
+def update(coffee):
     menu = MENU[coffee]
-    money += menu['cost']
+    money['money'] += menu['cost']
     for item in resources:
         resources[item] -= menu['ingredients'][item]
 
 
 def main():
-    global money
-    money = 0
+
     coffee = input("What would you like? (expresso/latte/cappuccino)?")
     if (coffee == "end"):
         print("machine turning off")
@@ -68,13 +69,14 @@ def main():
         print("Water: " + str(resources.get("water")) + "ml")
         print("Milk: " + str(resources.get("milk")) + "ml")
         print("Coffee: " + str(resources.get("coffee")) + "g")
-        print("Money: $" + money)
+        print("Money: $" + str(money['money']))
     else:
         ingredientsRequired = MENU[coffee]['ingredients']
         if enough_ingredients(ingredientsRequired):
             askMoney(coffee)
-            update(coffee, money)
+            update(coffee)
             print("here is your " + coffee + " enjoy!")
+            main()
 
 
 if __name__ == '__main__':
